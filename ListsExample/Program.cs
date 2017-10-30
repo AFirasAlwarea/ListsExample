@@ -31,19 +31,26 @@ namespace ListsExample
 
             // Make the user select to add or remove a student, or exit
 
+            #region Menu
             // A boolean to exit from the menu
             bool getOut = false;
             do
             {
                 Console.WriteLine("What do you want to do (Enter a number from the list below):");
-                Console.WriteLine(" 1 - Enter new students \r\n 2 - Remove on student \r\n 3 - exit");
+                Console.WriteLine(" 1 - Enter new students \r\n 2 - Remove on student \r\n 3 - Find a studnet \r\n 0 - exit");
                 int choice = GetNumber();
                 switch (choice)
                 {
+                    // Exit
+                    case 0:
+                        getOut = true;
+                        break;
                     // Let the user enter new students
                     case 1:
                         EnterNewStudents(names, grades);
-                        Console.WriteLine("The new list of student looks like");
+
+                        Console.WriteLine("The total number of students after addition is {0}", names.Count);
+                        Console.WriteLine("The new list of students looks like");
 
                         // Printing all the students after the addition of the new students
                         PrintAllStudents(names, grades);
@@ -58,6 +65,7 @@ namespace ListsExample
 
                         if (removed)
                         {
+                            Console.WriteLine("The total number of students after removal is {0}" , names.Count);
                             Console.WriteLine("Your class after removal");
                             PrintAllStudents(names, grades);
 
@@ -65,16 +73,40 @@ namespace ListsExample
                             , Avrg(grades), grades.Max());
                         }
                         break;
-                    // Exit
                     case 3:
-                        getOut = true;
+                        findOneStudent(names,grades);
                         break;
                     default:
-                        Console.WriteLine("Please from 1 to 3 only");
+                        Console.WriteLine("Please from 0 to 3 only");
                         break;
                 }
             } while (!getOut);
+            #endregion
         }
+
+        #region Find one student
+        /// <summary>
+        /// Findind one student and printing the relevant grade
+        /// </summary>
+        /// <param name="names"></param>
+        /// <param name="grades"></param>
+        private static void findOneStudent(List <string> names, List<int> grades)
+        {
+            Console.WriteLine("Enter the name of the student to find");
+            string findName = Console.ReadLine();
+            for (int i = 0; i < names.Count; i++)
+            {
+                if (string.Equals(findName, names[i], StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("I found {0} that has the grade {1}" , names[i] , grades[i]);
+                }
+                else
+                {
+                    Console.WriteLine("I didn't find {0} in your class" , findName);
+                }
+            }
+        }
+        #endregion
 
         #region Enter Grades Method
         /// <summary>
