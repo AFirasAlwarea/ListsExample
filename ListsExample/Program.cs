@@ -10,16 +10,17 @@ namespace ListsExample
     {
         static void Main(string[] args)
         {
+            // Initializing two lists of studetns names and grades
             List<string> names = new List<string> { "Stefan", "James", "Leo", "Samir", "Taha" };
-
             List<int> grades = new List<int>();
 
+            // Let the user enter grades of the students
             Console.WriteLine("Enter the students grades");
 
             foreach (var item in names)
             {
                 Console.WriteLine(item);
-                int oneGrade = int.Parse(Console.ReadLine());
+                int oneGrade = GetNumber();
                 grades.Add(oneGrade);
             }
 
@@ -71,7 +72,7 @@ namespace ListsExample
                     {
                         if (removeStudent == names[i].ToLower())
                         {
-                            Console.WriteLine("I found {0}. Are you sure you want to remove?" , names[i]);
+                            Console.WriteLine("I found {0}. Are you sure you want to remove?", names[i]);
                             string sure = Console.ReadLine();
                             if (sure.Contains("y") || sure.Contains("Y"))
                             {
@@ -119,7 +120,7 @@ namespace ListsExample
         private static void EnterNewStudents(List<string> names, List<int> grades)
         {
             Console.WriteLine("Enter the number of the students that you want to add");
-            int newStudentsNumber = int.Parse(Console.ReadLine());
+            int newStudentsNumber = GetNumber();
             Console.WriteLine("Enter each new student name then the grade");
             for (int i = 0; i < newStudentsNumber; i++)
             {
@@ -127,7 +128,7 @@ namespace ListsExample
                 string newName = Console.ReadLine();
                 names.Add(newName);
                 Console.WriteLine("Grade:");
-                int newGrade = int.Parse(Console.ReadLine());
+                int newGrade = GetNumber();
                 grades.Add(newGrade);
             }
         }
@@ -145,6 +146,35 @@ namespace ListsExample
             int sum = grades.Sum();
             int avg = sum / grades.Count;
             return avg;
+        }
+
+        private static int GetNumber()
+        {
+            int number = 0;
+            bool succeeded = false;
+
+            do
+            {
+                string sNumber = Console.ReadLine();
+                try
+                {
+                    number = int.Parse(sNumber);
+                    succeeded = true;
+                }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("You entered too big number, try again!");
+                }
+                catch (ArgumentNullException)
+                {
+                    Console.WriteLine("You entered nothing, try again!");
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("You should enter only integer numbers, try again!");
+                }
+            } while (!succeeded);
+            return number;
         }
     }
 }
